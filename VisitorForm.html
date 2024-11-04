@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visiting Form</title>
+    <link rel="stylesheet" href="./VisitorForm.css">
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="heading">Heading</div>
+        <div class="main">
+            <form action="" method="POST"  name="Visitor-Log">
+                <div class="section">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="Date" required>
+                </div>
+                <div class="section">
+                    <label for="name">Visitor's Name</label>
+                    <input type="text" id="name" name="VisitorName" required>
+                </div>
+                <div class="section">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="text" id="contactNumber" name="ContactNumber" required>
+                </div>
+                <div class="section">
+                    <label for="reasonOfVisit">Purpose Of Visit</label>
+                    <textarea id="reasonOfVisit" name="ReasonOfVisit" rows="2" required></textarea>
+                </div>
+                <div class="section">
+                    <label for="personToMeet">Person to Meet</label>
+                    <input type="text" id="personToMeet" name="PersonToMeet" required>
+                </div>
+                <div class="section time-container">
+                    <div class="time-input">
+                        <label for="checkInTime">Check-In Time</label>
+                        <input type="time" id="checkInTime" name="CheckInTime" required>
+                    </div>
+                    <div class="time-input">
+                        <label for="checkOutTime">Check-Out Time</label>
+                        <input type="time" id="checkOutTime" name="CheckOutTime" required>
+                    </div>
+                </div>
+                <div class="section">
+                    <label for="remarks">Remarks</label>
+                    <textarea id="remarks" name="Remarks" rows="3"></textarea>
+                </div>
+                
+                <div class="section btn-div">
+                    <input type="submit" value="Submit" class="submit-btn">
+                </div>
+            </form>
+        </div> 
+    </div>
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <p>Thank you! Your submission has been recorded.</p>
+            <button class="modal-button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+   <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyP3YHjEU3P1B6RwL4xsAChySazD3lS2QWGs1WKkOrcYBydrYubLIY-de1JOgDzGxFY4g/exec'
+        const form = document.forms['Visitor-Log']
+        const modal = document.getElementById("modal")
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                modal.classList.add("active");  // Show modal on successful submission
+            })
+            .catch(error => console.error('Error!', error.message))
+        })
+
+        // Close modal function
+        function closeModal() {
+            modal.classList.remove("active");
+            window.location.reload(); // Reload the page after closing the modal
+        }
+    </script>
+</body>
+</html>
