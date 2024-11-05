@@ -10,7 +10,7 @@
     <div class="mainDiv">
         <div class="heading">Heading</div>
         <div class="main">
-            <form action="" method="POST"  name="Visitor-Log">
+            <form action="" method="POST" name="Visitor-Log">
                 <div class="section">
                     <label for="date">Date</label>
                     <input type="date" id="date" name="Date" required>
@@ -47,7 +47,7 @@
                 </div>
                 
                 <div class="section btn-div">
-                    <input type="submit" value="Submit" class="submit-btn">
+                    <input type="submit" value="Submit" class="submit-btn" id="submitButton">
                 </div>
             </form>
         </div> 
@@ -59,18 +59,29 @@
         </div>
     </div>
 
-   <script>
+    <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyP3YHjEU3P1B6RwL4xsAChySazD3lS2QWGs1WKkOrcYBydrYubLIY-de1JOgDzGxFY4g/exec'
         const form = document.forms['Visitor-Log']
         const modal = document.getElementById("modal")
+        const submitButton = document.getElementById("submitButton")
 
         form.addEventListener('submit', e => {
             e.preventDefault()
+            // Disable the submit button and show loading text
+            submitButton.disabled = true
+            submitButton.value = "Submitting..."
+
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
             .then(response => {
                 modal.classList.add("active");  // Show modal on successful submission
+                submitButton.disabled = false
+                submitButton.value = "Submit"
             })
-            .catch(error => console.error('Error!', error.message))
+            .catch(error => {
+                console.error('Error!', error.message)
+                submitButton.disabled = false
+                submitButton.value = "Submit"
+            })
         })
 
         // Close modal function
